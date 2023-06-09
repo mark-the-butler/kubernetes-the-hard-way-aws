@@ -9,12 +9,14 @@ resource "aws_key_pair" "computer_instances" {
 }
 
 resource "aws_instance" "controllers" {
+  count = 3
+
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.main_public.id
-  security_groups             = [aws_security_group.allow_external.id]
+  security_groups             = [aws_security_group.allow_external.id, aws_security_group.allow_internal.id]
   associate_public_ip_address = true
-  private_ip                  = "10.100.10.10"
+  private_ip                  = "10.100.10.1${count.index}"
   monitoring                  = true
   key_name                    = aws_key_pair.computer_instances.key_name
 
@@ -24,6 +26,6 @@ resource "aws_instance" "controllers" {
   }
 
   tags = {
-    Name = "K8s-Controller-01"
+    Name = "K8s-Controller-0${count.index}"
   }
 }
