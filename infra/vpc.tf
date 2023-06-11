@@ -3,7 +3,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "K8s-VPC"
+    Name = "k8s-vpc"
   }
 }
 
@@ -13,7 +13,7 @@ resource "aws_subnet" "main_public" {
   availability_zone_id = local.default_az_id
 
   tags = {
-    Name = "K8s-Public-Subnet"
+    Name = "k8s-public-subnet"
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "K8s-Main-GW"
+    Name = "k8s-main-igw"
   }
 }
 
@@ -29,7 +29,7 @@ resource "aws_route_table" "main_public" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "K8s-Public-Subnet-RT"
+    Name = "k8s-public-subnet-rt"
   }
 }
 

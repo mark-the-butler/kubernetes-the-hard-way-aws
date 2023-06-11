@@ -26,7 +26,7 @@ resource "aws_instance" "controllers" {
   }
 
   tags = {
-    Name = "K8s-Controller-0${count.index}"
+    Name = "controller-${count.index}"
   }
 }
 
@@ -48,6 +48,6 @@ resource "aws_instance" "workers" {
   }
 
   tags = {
-    Name = "K8s-Worker-0${count.index}"
+    Name = "worker-${count.index}"
   }
 }
