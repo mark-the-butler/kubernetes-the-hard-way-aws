@@ -43,3 +43,11 @@ resource "aws_route_table_association" "main_public" {
   subnet_id      = aws_subnet.main_public.id
   route_table_id = aws_route_table.main_public.id
 }
+
+resource "aws_eip" "load_balancer" {
+  domain = "vpc"
+
+  tags = {
+    Name = "k8s-external-loadbalancer-ip"
+  }
+}

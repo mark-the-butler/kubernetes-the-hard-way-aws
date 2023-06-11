@@ -14,7 +14,7 @@ resource "aws_instance" "controllers" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.main_public.id
-  security_groups             = [aws_security_group.allow_external.id, aws_security_group.allow_internal.id]
+  vpc_security_group_ids      = [aws_security_group.allow_external.id, aws_security_group.allow_internal.id]
   associate_public_ip_address = true
   private_ip                  = "10.100.10.1${count.index}"
   monitoring                  = true
@@ -36,7 +36,7 @@ resource "aws_instance" "workers" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.main_public.id
-  security_groups             = [aws_security_group.allow_external.id, aws_security_group.allow_internal.id]
+  vpc_security_group_ids      = [aws_security_group.allow_external.id, aws_security_group.allow_internal.id]
   associate_public_ip_address = true
   private_ip                  = "10.100.10.2${count.index}"
   monitoring                  = true
