@@ -1,3 +1,39 @@
+locals {
+  controller_ips = {
+    for instance in aws_instance.controllers :
+    instance.tags.Name => {
+      public_ip  = instance.public_ip,
+      private_ip = instance.private_ip
+    }
+  }
+
+  worker_ips = {
+    for instance in aws_instance.workers :
+    instance.tags.Name => {
+      public_ip  = instance.public_ip,
+      private_ip = instance.private_ip
+    }
+  }
+
+  static_ip = aws_eip.load_balancer.public_ip
+}
+
+variable "revision" {
+  default = 1
+}
+
+resource "terraform_data" "revision" {
+  input = var.revision
+}
+
+resource "terraform_data" "generate_certs" {
+  triggers_replace = terraform_data.revision
+  provisioner "local-exec" {
+    interpreter = [ "/bin/bash", "-c" ]
+    command = "./PKI/generate_certs.sh '${jsonencode(local.worker_ips)}' ${local.static_ip}"
+  }
+}
+
 resource "tls_private_key" "this" {
   algorithm = "RSA"
   rsa_bits  = 4096
